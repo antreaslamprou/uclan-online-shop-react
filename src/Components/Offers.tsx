@@ -9,8 +9,6 @@ interface Offer {
 export default function Offers() {
     const [offers, setOffers] = useState<Offer[]>([]);
     const [isLoading, setIsLoading] = useState(true);
-
-    console.log(process.env.REACT_APP_API_URL);
     
     useEffect(() => {
         axios.get(`${process.env.REACT_APP_API_URL}`)
