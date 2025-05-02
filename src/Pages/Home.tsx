@@ -1,7 +1,7 @@
 import Video from '../Components/Video';
 import Offers from '../Components/Offers';
 
-export default function Home() {
+const Home = () => {
     return(
         <>
             <Offers />
@@ -13,3 +13,5 @@ export default function Home() {
         </>
     );
 }
+
+export default Home;
