@@ -4,7 +4,7 @@ const cors = require('cors');
 const fs = require('fs');
 require('dotenv').config();
 
-const caCert = fs.readFileSync('./ca.pem');
+const CACertificate = fs.readFileSync(process.env.CA_CERTIFICATE_PATH);
 const app = express();
 app.use(cors()); // Allow React to access this server
 app.use(express.json());
@@ -16,7 +16,7 @@ const db = mysql.createConnection({
   database: process.env.DB_NAME,
   port: process.env.DB_PORT,
   ssl: {
-    ca: caCert
+    ca: CACertificate
   }
 });
 
