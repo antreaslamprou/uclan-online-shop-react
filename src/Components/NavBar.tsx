@@ -16,7 +16,7 @@ export default function NavBar(){
         <header className="navbar navbar-expand-lg bg-primary text-white py-4">
             <div className="container-fluid">
                 <Link to="/" onClick={() => setActive('home')}>
-                    <img className="" src="./uclanlogo.png" alt="Page Logo" />
+                    <img className="" src="/images/uclanlogo.png" alt="Page Logo" />
                 </Link>
                 <h1>Student Shop</h1>
                 <div className="d-flex gap-2 text-white">

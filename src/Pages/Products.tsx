@@ -3,7 +3,7 @@ import React, { lazy } from 'react';
 // Lazy load the ProductGrid component
 const ProductGrid = lazy(() => import('../Components/ProductsGrid'));
 
-const Page = () => {
+const Products = () => {
   return (
     <div className="container my-4">
         <ProductGrid />
@@ -11,4 +11,4 @@ const Page = () => {
   );
 };
 
-export default Page;
+export default Products;
