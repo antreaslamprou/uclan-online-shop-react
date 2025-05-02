@@ -11,7 +11,7 @@ export default function Offers() {
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        axios.get('http://localhost:3001')
+        axios.get(`${process.env.API_URL}`)
         .then(res => setOffers(res.data))
         .catch(err => console.error(err))
         .finally(() => setIsLoading(false));

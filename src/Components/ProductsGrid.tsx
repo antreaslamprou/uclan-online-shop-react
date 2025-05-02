@@ -31,7 +31,7 @@ export default function ProductsGrid() {
 
     const fetchSingleProduct = async (productId: number) => {
         try {
-          const res = await axios.get(`http://localhost:3001/products?id=${productId}`);
+          const res = await axios.get(`${process.env.API_URL}/products?id=${productId}`);
           const product = res.data;
           setSingleProduct(product); // use separate state
         } catch (error) {
@@ -41,7 +41,7 @@ export default function ProductsGrid() {
       
     const fetchProducts = async () => {
         try {
-            const res = await axios.get(`http://localhost:3001/products?page=${page}&limit=${limit}`);
+            const res = await axios.get(`${process.env.API_URL}/products?page=${page}&limit=${limit}`);
             
             if(!isLoading) await new Promise(resolve => setTimeout(resolve, 500));
             
