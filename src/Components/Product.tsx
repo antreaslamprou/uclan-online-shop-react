@@ -17,7 +17,7 @@ interface Product {
 export default function Product(props: Props) {
     return (
         <div key={props.product.product_id} className="card product">
-            {props.dontShowLink && (<Link to="/products" className="position-absolute top-0 left-0"><i className="bi bi-chevron-left"></i></Link>)}
+            {props.dontShowLink && (<Link to="/products" className="position-absolute top-0 left-0"><i className="bi bi-chevron-left px-1"></i></Link>)}
             <img loading="lazy" src={props.product.product_image} className="card-img-top" alt={props.product.product_title} />
             <div className="card-body bg-body-secondary">
                 <h5 className="card-title text-orange">{props.product.product_title}</h5>

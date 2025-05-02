@@ -32,6 +32,10 @@ html, body, #root {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
+.product i {
+    font-size: 35px;
+}
+
 video {
     max-width: 1296px;
     aspect-ratio: 1.89!important;
@@ -45,3 +49,4 @@ iframe {
 .card.product .card-text a {
     margin-top: -5px;
 }
+
