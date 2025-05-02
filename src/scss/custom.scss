@@ -1,0 +1,8 @@
+// Override Bootstrap color variables BEFORE importing Bootstrap
+$primary: #BE1622;
+$secondary: #34516C;
+
+// Import Bootstrap after setting your overrides
+@import "~/node_modules/bootstrap/scss/bootstrap";
+
+
