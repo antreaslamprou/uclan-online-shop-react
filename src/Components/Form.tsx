@@ -1,5 +1,6 @@
 import axios, { AxiosError } from "axios";
 import { useEffect, useState } from "react";
+import { useNavigate } from 'react-router-dom';
 
 
 export default function Form() {
@@ -14,6 +15,8 @@ export default function Form() {
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [address, setAddress] = useState('');
+
+    const navigate = useNavigate();
 
     const switchForm = (form: string) => {
         setActiveForm(form);
@@ -33,9 +36,9 @@ export default function Form() {
             <span>{children}</span>
           </div>
         );
-      }
+    }
 
-    const handleSubmit = async (e: React.FormEvent) => {
+        const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
         try {
@@ -44,7 +47,13 @@ export default function Form() {
                     email,
                     password
                     };
-                const res = await axios.post(`${process.env.REACT_APP_API_URL}/auth/login` , credentials);
+                const res = await axios.post(`${process.env.REACT_APP_API_URL}/auth/login` , credentials, {
+                    withCredentials: true
+                });
+                if (res.status === 200) {
+                    navigate('/profile');
+                }
+                
             } else {
                 const credentials = {
                     email,
@@ -58,7 +67,12 @@ export default function Form() {
                     return;
                 }
 
-                const res = await axios.post(`${process.env.REACT_APP_API_URL}/auth/signup`, credentials);           
+                const res = await axios.post(`${process.env.REACT_APP_API_URL}/auth/signup`, credentials, {
+                    withCredentials: true
+                });           
+                if (res.status === 200) {
+                    navigate('/profile');
+                }
             }
         } catch (err) {
             const error = err as AxiosError<{ error: string }>;
@@ -87,15 +101,30 @@ export default function Form() {
                     </div>
                     <div className="mb-3">
                         <label htmlFor="password" className="form-label">Password</label>
-                        <input
-                            id="password"
-                            type="password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            placeholder="Enter your password"
-                            className="form-control"
-                            required
-                        />
+                        <div className="field-group position-relative">
+                            <input
+                                id="password"
+                                type={showPassword ? "text" : "password"}
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                onFocus={() => setIsPasswordFocused(true)}
+                                onBlur={() => setIsPasswordFocused(false)}
+                                pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" 
+                                title="Must contain at least one number and one lowercase and uppercase letter, and at least 8 or more characters"
+                                placeholder="Enter your password"
+                                className="form-control"
+                                required
+                            />
+                            <button
+                                type="button"
+                                className="btn position-absolute top-0 end-0"
+                                onClick={() => setShowPassword((prev) => !prev)}
+                                onFocus={() => setIsPasswordFocused(true)}
+                                onBlur={() => setIsPasswordFocused(false)}
+                                >
+                                <i className={showPassword ? "bi bi-eye-fill" : "bi bi-eye-slash-fill"}></i>
+                            </button>
+                        </div>
                     </div>
                     {errorMessage && (<div className="text-danger">{errorMessage}</div>)}
                     <button type="submit" className="btn btn-secondary mt-4">Log in</button>
@@ -151,7 +180,7 @@ export default function Form() {
                                 onFocus={() => setIsPasswordFocused(true)}
                                 onBlur={() => setIsPasswordFocused(false)}
                                 >
-                                <i className={showPassword ? "bi bi-eye-slash-fill" : "bi bi-eye-fill"}></i>
+                                <i className={showPassword ? "bi bi-eye-fill" : "bi bi-eye-slash-fill"}></i>
                             </button>
                         </div>
                     </div>
@@ -183,7 +212,7 @@ export default function Form() {
                                 className="btn position-absolute top-0 end-0"
                                 onClick={() => setShowConfirmPassword((prev) => !prev)}
                                 >
-                                <i className={showConfirmPassword ? "bi bi-eye-slash-fill" : "bi bi-eye-fill"}></i>
+                                <i className={showConfirmPassword ? "bi bi-eye-fill" : "bi bi-eye-slash-fill"}></i>
                             </button>
                         </div>
                     </div>

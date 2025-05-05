@@ -6,7 +6,6 @@ export default function NavBar(){
     const location = useLocation();
     const [active, setActive] = useState<string>('');
 
-    // Get current page from url
     useEffect(() => {
         const path = location.pathname === '/' ? 'home' : location.pathname.slice(1);
         setActive(path);
@@ -23,7 +22,7 @@ export default function NavBar(){
                     <Link to="/" className={active === 'home' ? 'btn active' : 'btn'} onClick={() => setActive('home')}>Home</Link>
                     <Link to="/products" className={active === 'products' ? 'btn active' : 'btn'} onClick={() => setActive('products')}>Products</Link>
                     <Link to="/cart" className={active === 'cart' ? 'btn active' : 'btn'} onClick={() => setActive('cart')}>Cart</Link>
-                    <Link to="/login" className={active === 'login' ? 'btn active' : 'btn'} onClick={() => setActive('login')}><i className="bi bi-person-circle"></i></Link>
+                    <Link to="/profile" className={active === 'profile' || active === 'login' ? 'btn active' : 'btn'} onClick={() => setActive('profile')}><i className="bi bi-person-circle"></i></Link>
                 </div>
             </div>
         </header>
