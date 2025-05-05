@@ -23,7 +23,7 @@ export default function NavBar(){
                     <Link to="/" className={active === 'home' ? 'btn active' : 'btn'} onClick={() => setActive('home')}>Home</Link>
                     <Link to="/products" className={active === 'products' ? 'btn active' : 'btn'} onClick={() => setActive('products')}>Products</Link>
                     <Link to="/cart" className={active === 'cart' ? 'btn active' : 'btn'} onClick={() => setActive('cart')}>Cart</Link>
-                    <Link to="/login" className={active === 'login' ? 'btn active' : 'btn'} onClick={() => setActive('login')}>Log in</Link>
+                    <Link to="/login" className={active === 'login' ? 'btn active' : 'btn'} onClick={() => setActive('login')}><i className="bi bi-person-circle"></i></Link>
                 </div>
             </div>
         </header>
