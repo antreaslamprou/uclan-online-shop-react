@@ -28,7 +28,7 @@ export default function ProductsGrid() {
             
             const newProducts = res.data;
             
-              // Avoid duplicates
+            // Avoid duplicates
             setProducts(prev => {
                 const productIds = new Set(prev.map((p: Product) => p.product_id));
                 const unique = newProducts.filter((p: Product) => !productIds.has(p.product_id));
@@ -73,7 +73,7 @@ export default function ProductsGrid() {
                     <div className='products-grid d-flex flex-row gap-3 flex-wrap justify-content-center'>
                         {products.map((product, i) => (
                             <Product key={i} product={product} />
-                        ))};
+                        ))}
                     </div>
                 </InfiniteScroll>
             )}

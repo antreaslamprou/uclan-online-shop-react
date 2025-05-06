@@ -19,7 +19,7 @@ export default function Offers() {
 
     return (
         <>
-        <h2 className="text-purple mb-3">Offers</h2>
+        <h1 className="text-purple mb-3">Offers</h1>
         {(isLoading) ? (
             <div className="d-flex justify-content-center align-items-center" style={{ minHeight: '200px' }}>
                 <div className="spinner-border text-primary" role="status">

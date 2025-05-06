@@ -27,7 +27,7 @@ const Profile = () => {
             withCredentials: true 
           });
           if (res.status === 200) {
-            navigate('/profile');
+            navigate('/login');
         }
           console.log('Logged out successfully');
         } catch (err) {
@@ -37,10 +37,10 @@ const Profile = () => {
       
     return(
        <>
-            <h1 className="text-orange mb-4">Profile</h1>
-            <h2>Welcome back {user}</h2>
+          <h1 className="text-orange mb-4">Profile</h1>
+          <h2>Welcome back {user}</h2>
 
-            <button className='btn btn-danger' onClick={LogOut}>Log Out</button>
+          <button className='btn btn-danger' onClick={LogOut}>Log Out</button>
        </>
     );
 }

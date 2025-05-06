@@ -4,6 +4,7 @@ import cors from 'cors';
 import passport from "./passport.js";
 import offerRoutes from './routes/offers.js';
 import productRoutes from './routes/products.js';
+import reviewRoutes from './routes/reviews.js';
 import authRoutes from './routes/auth.js';
 
 const app = express();
@@ -18,9 +19,9 @@ app.use(session({
   resave: false,
   saveUninitialized: false,
   cookie: {
-    secure: process.env.NODE_ENV === 'production', // if using HTTPS
+    secure: process.env.NODE_ENV === 'production',
     httpOnly: true,
-    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+    sameSite: 'lax',
     maxAge: 24 * 60 * 60 * 1000 // 24 hours
   }
 }));
@@ -29,6 +30,7 @@ app.use(passport.session());
 
 app.use('/', offerRoutes);
 app.use('/products', productRoutes);
+app.use('/reviews', reviewRoutes);
 app.use('/auth', authRoutes);
 
 app.listen(3001, () => {

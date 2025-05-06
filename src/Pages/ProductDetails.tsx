@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import Product from '../Components/Product';
 import NotFound from './NotFound';
+import Reviews from '../Components/Reviews';
 
 interface Product {
   product_id: number,
@@ -51,7 +52,10 @@ const ProductDetails = () => {
         ) : isError ? (
           <NotFound />
         ) : (
-          <Product product={singleProduct!} dontShowLink={true} />
+          <>
+            <Product key={singleProduct?.product_id} product={singleProduct!} isSingleProduct={true} />
+            <Reviews />
+          </>
         )}
     </div>
   );

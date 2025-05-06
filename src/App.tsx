@@ -3,7 +3,7 @@ import './App.css';
 import { Routes, Route } from 'react-router-dom';
 import NavBar from './Components/NavBar';
 import Footer from './Components/Footer';
-import ProtectedRoute from './Components/ProtectedRoute';
+import Protected from './Components/Protected';
 import Home from './Pages/Home';
 import Products from './Pages/Products';
 import Cart from './Pages/Cart';
@@ -23,7 +23,7 @@ function App() {
           <Route path="/products/:id" element={<ProductDetails />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+          <Route path="/profile" element={<Protected type="Route"><Profile /></Protected>} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </main>

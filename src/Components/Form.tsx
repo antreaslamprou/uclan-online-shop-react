@@ -62,7 +62,7 @@ export default function Form() {
                     address
                 };
 
-                if (password != confirmPassword) {
+                if (password !== confirmPassword) {
                     setErrorMessage("Passwords don't match!");
                     return;
                 }
@@ -233,7 +233,7 @@ export default function Form() {
                 </form>
             </>
             )}
-            <button type="button" className="btn mt-4" onClick={() => switchForm(activeForm === 'Log in' ? 'Sign up' : 'Log in')}>Already have an account? Click here to go to {activeForm === 'Log in' ? 'Sign up' : 'Log in'}!</button>
+            <button type="button" className="btn border-0 mt-4" onClick={() => switchForm(activeForm === 'Log in' ? 'Sign up' : 'Log in')}>Already have an account? Click here to go to {activeForm === 'Log in' ? 'Sign up' : 'Log in'}!</button>
        </>
     );
 }

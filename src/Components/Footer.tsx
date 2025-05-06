@@ -1,7 +1,7 @@
 export default function Footer() {
     return(
         <footer className="bg-secondary p-5 text-white">
-            <div className="w-100 d-flex flex-column flex-md-row justify-content-between">
+            <div className="container-md d-flex flex-column flex-md-row justify-content-between">
                 <div>
                     <h3>Links</h3>
                     <p><a className="text-white fw-bold" href="https://www.uclan.ac.uk/">UCLan Home Page </a></p>

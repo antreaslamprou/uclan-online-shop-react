@@ -36,6 +36,13 @@ html, body, #root {
     font-size: 35px;
 }
 
+.product .card-text {
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
 video {
     max-width: 1296px;
     aspect-ratio: 1.89!important;
@@ -48,4 +55,10 @@ iframe {
 
 .card.product .card-text a {
     margin-top: -5px;
+}
+
+.rating-field {
+    height: 0;
+    border: 0;
+    position: absolute;
 }
