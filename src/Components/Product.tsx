@@ -87,27 +87,30 @@ export default function Product(props: Props) {
                 </div>
             </div>
         )}  
-        <div key={props.product.product_id} className="card product">
-            {props.isSingleProduct && (<Link to="/products" className="position-absolute top-0 left-0"><i className="bi bi-chevron-left px-1"></i></Link>)}
-            {!loaded && <Skeleton className='card-img-top mt-0 pt-0' style={{width: '100%', aspectRatio: '1 / 1' }}/>}
-            <img 
-                loading="lazy" 
-                src={`/${props.product.product_image}`} 
-                className="card-img-top" 
-                alt={props.product.product_title} 
-                onLoad={() => setLoaded(true)} />
-            <div className="card-body bg-body-secondary d-flex flex-column justify-content-between">
-                <h5 className="card-title text-orange">{props.product.product_title}</h5>
-                <div>
-                    <p className="card-text mb-0">
-                        {capitalize(props.product.product_desc)}.
-                    </p>
-                    {!props.isSingleProduct && (<Link to={`/products/${props.product.product_id}`} className="card-text btn border-0 p-0 text-primary text-start">Read More</Link>)}
-                    <p className="fw-bold">£ {props.product.product_price}</p>
-                    <button onClick={addToCart} className="btn btn-primary py-2 px-4">Buy</button>
+        <Link to={`/products/${props.product.product_id}`} className="btn border-0 p-0 text-start">
+            <div key={props.product.product_id} className="card product">
+                {props.isSingleProduct && (<Link to="/products" className="position-absolute top-0 left-0"><i className="bi bi-chevron-left px-1"></i></Link>)}
+                {!loaded && <Skeleton className='card-img-top mt-0 pt-0' style={{width: '100%', aspectRatio: '1 / 1' }}/>}
+                <img 
+                    loading="lazy" 
+                    src={`/${props.product.product_image}`} 
+                    className="card-img-top" 
+                    alt={props.product.product_title} 
+                    onLoad={() => setLoaded(true)} />
+                <div className="card-body bg-body-secondary d-flex flex-column justify-content-between">
+                    <h5 className="card-title text-orange">{props.product.product_title}</h5>
+                    <div>
+                        <p className="card-text mb-0">
+                            {capitalize(props.product.product_desc)}.
+                        </p>
+                        <p className="fw-bold">£ {props.product.product_price}</p>
+                        <div className='d-flex'>
+                            <button onClick={addToCart} className={`btn btn-primary py-2 px-4 mx-auto ${props.isSingleProduct ? 'w-50' : 'w-100' }`}>Add to card</button>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
+        </Link>
         </>
     )
 }

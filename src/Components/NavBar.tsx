@@ -9,8 +9,8 @@ export default function NavBar(){
     useEffect(() => {
         const path = location.pathname === '/' ? 'home' : location.pathname.slice(1);
         setActive(path);
-    }, [location.pathname]);
-    
+    }, [location.pathname]);    
+
     return (
         <header className="navbar navbar-expand-lg bg-primary text-white py-4">
             <div className="container-fluid justify-content-between">

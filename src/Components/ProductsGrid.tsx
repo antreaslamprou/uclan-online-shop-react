@@ -21,6 +21,8 @@ export default function ProductsGrid() {
 
     const [search, setSearch] = useState('');
 
+    const [activeFilters, setActiveFilters] = useState(0);
+    
     const [showHoodies, setShowHoodies] = useState(false);
     const [showJumpers, setShowJumpers] = useState(false);
     const [showTshirts, setShowTshirts] = useState(false);
@@ -99,17 +101,30 @@ export default function ProductsGrid() {
         fetchProducts();
     }, [search, showHoodies, showJumpers, showTshirts]);
 
+    useEffect(() => {
+        var counter = 0;
+        [showHoodies, showJumpers, showTshirts].map((item) => {
+            if (item) counter++;
+        })
+        setActiveFilters(counter);
+    }, [showHoodies, showJumpers, showTshirts]);
+
     return(
         <>
             <div className='flex-3'>
-                <h1 className='text-purple text-center mb-4'>All Products</h1>
-                <div className='input-group mb-2'>
+                <div className='input-group mb-4'>
                     <button className="btn btn-outline-secondary border-color-grey" type="button" disabled={true}><i className="bi bi-search"></i></button>
                     <input className='form-control' placeholder='Search' type="text" onChange={(e) => setSearchText(e.target.value)} />
                 </div>
-                <div className='pt-2'>
-                    <h5>Filters:</h5>
-                    <div className='row'>
+                <div className="accordion" id="filtersAccordion">
+                    <div className="accordion-item">
+                        <h2 className="accordion-header">
+                        <button className="accordion-button collapsed bg-white" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                            <h5><i className="bi bi-funnel-fill"></i> Filters {activeFilters > 0 ? (<span className='badge rounded-circle bg-primary text-white ms-2 px-2 py-1'>{activeFilters}</span>) : ''}</h5>
+                        </button>
+                        </h2>
+                        <div id="collapseOne" className="accordion-collapse collapse" data-bs-parent="#filtersAccordion">
+                        <div className='row accordion-body'>
                         <div className='col-6 col-md-3 p-2'>
                             <div className="input-group">
                                 <div className="input-group-text">
@@ -140,7 +155,9 @@ export default function ProductsGrid() {
                             </div>
                         </div>
                     </div>
-                </div>
+                        </div>
+                    </div>
+                </div>                    
             </div>
             <hr className='mt-4 mb-5'/>
             {isLoading ? (
