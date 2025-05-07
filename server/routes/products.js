@@ -25,6 +25,13 @@ router.get('/:id', (req, res) => {
 // Pagination logic for products list
 router.get('/', (req, res) => {
   const types = req.query.type; 
+  const search = req.query.search;
+  var searchQuery = '';
+  var searchQueryWhere = '';
+  if (search != undefined && search != '') {
+    searchQuery = " AND product_title LIKE '" + search + "'";
+    searchQueryWhere = "WHERE product_title LIKE '" + search + "'";
+  } 
   if (types) {
     var filtersQuery = 'SELECT * FROM tbl_products';
     var params = [];
@@ -36,6 +43,7 @@ router.get('/', (req, res) => {
       filtersQuery += ' WHERE product_type = ?';
       params = [types];
     }
+    filtersQuery += searchQuery;
     db.query(filtersQuery, params, (err, results) => {
       if (err) {
         console.error('Database query error:', err);
@@ -46,11 +54,10 @@ router.get('/', (req, res) => {
     });
   } else {
     const page = parseInt(req.query.page) || 1;
-    const limit = parseInt(req.query.limit) || 9;
+    const limit = parseInt(req.query.limit) || 12;
     const offset = (page - 1) * limit;
 
-    const query = 'SELECT * FROM tbl_products LIMIT ? OFFSET ?';
-
+    const query = `SELECT * FROM tbl_products ${searchQueryWhere} LIMIT ? OFFSET ?`;
     db.query(query, [limit, offset], (err, results) => {
       if (err) {
         console.error('Database query error:', err);

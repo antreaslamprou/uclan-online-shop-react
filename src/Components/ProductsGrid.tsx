@@ -16,8 +16,10 @@ export default function ProductsGrid() {
     const [products, setProducts] = useState<Product[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [page, setPage] = useState(1);
-    const limit = 9;
+    const limit = 12;
     const [hasMore, setHasMore] = useState(true);
+
+    const [search, setSearch] = useState('');
 
     const [showHoodies, setShowHoodies] = useState(false);
     const [showJumpers, setShowJumpers] = useState(false);
@@ -27,7 +29,11 @@ export default function ProductsGrid() {
       
     const fetchProducts = async () => {
         try {
-
+            var searchParam = '';
+            if (search !== '') {
+                var searchEncoded = encodeURIComponent(search);
+                searchParam = `&search=%${searchEncoded}%`;
+            }
             if (showHoodies || showJumpers || showTshirts) {
                 const filterParams: string[] = [];
 
@@ -36,12 +42,14 @@ export default function ProductsGrid() {
                 if (showTshirts) filterParams.push("type=UCLan Logo Tshirt");
                 
                 const filtersQuery = filterParams.join("&");
-                const res = await axios.get(`${process.env.REACT_APP_API_URL}/products?${filtersQuery}`);
+                const res = await axios.get(`${process.env.REACT_APP_API_URL}/products?${filtersQuery}${searchParam}`);
                 setProducts(res.data);
-                setHasMore(false);
                 setIsLoading(false);
+                if (products.length < limit) {
+                    setHasMore(false);
+                }
             } else {
-                const res = await axios.get(`${process.env.REACT_APP_API_URL}/products?page=${page}&limit=${limit}`);
+                const res = await axios.get(`${process.env.REACT_APP_API_URL}/products?page=${page}&limit=${limit}${searchParam}`);
                 
                 const newProducts = res.data;
 
@@ -62,14 +70,19 @@ export default function ProductsGrid() {
         }
     };
 
+    function setSearchText (value: string) {
+        setPage(1);
+        setSearch(value);
+    }
+
     const clearFilters = () => {
         setIsLoading(true);
         setShowHoodies(false);
         setShowJumpers(false);
         setShowTshirts(false);
-        setPage(1);       
+        setPage(1);
         setHasMore(true);
-        setProducts([]);         
+        setProducts([]);
     }
 
     useEffect(() => {
@@ -79,16 +92,20 @@ export default function ProductsGrid() {
     }, []);
 
     useEffect(() => {
+        setIsLoading(true);
+        setProducts([]);
+        setPage(1);
+        setHasMore(true);
         fetchProducts();
-    }, [showHoodies, showJumpers, showTshirts]);
+    }, [search, showHoodies, showJumpers, showTshirts]);
 
     return(
         <>
             <div className='flex-3'>
                 <h1 className='text-purple text-center mb-4'>All Products</h1>
                 <div className='input-group mb-2'>
-                    <input className='form-control' placeholder='Search' type="text" />
-                    <button className="btn btn-outline-secondary border-color-grey" type="button"><i className="bi bi-search"></i></button>
+                    <button className="btn btn-outline-secondary border-color-grey" type="button" disabled={true}><i className="bi bi-search"></i></button>
+                    <input className='form-control' placeholder='Search' type="text" onChange={(e) => setSearchText(e.target.value)} />
                 </div>
                 <div className='pt-2'>
                     <h5>Filters:</h5>
@@ -119,7 +136,7 @@ export default function ProductsGrid() {
                         </div>
                         <div className='col-6 col-md-3 p-2'>
                             <div className="input-group">
-                                <button onClick={clearFilters} className="btn btn-primary w-100 border-0">Show All</button>
+                                <button onClick={clearFilters} className="btn btn-primary w-100 border-0" disabled={!(showHoodies || showJumpers || showTshirts)}>Show All</button>
                             </div>
                         </div>
                     </div>
