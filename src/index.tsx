@@ -5,7 +5,7 @@ import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
 import './scss/custom.scss';
 import 'bootstrap-icons/font/bootstrap-icons.css';
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+import 'bootstrap/dist/js/bootstrap.bundle.min.js'; 
 
 
 const root = ReactDOM.createRoot(

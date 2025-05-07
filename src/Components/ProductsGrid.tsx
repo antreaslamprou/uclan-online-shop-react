@@ -16,33 +16,61 @@ export default function ProductsGrid() {
     const [products, setProducts] = useState<Product[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [page, setPage] = useState(1);
-    const [hasMore, setHasMore] = useState(true);
     const limit = 9;
+    const [hasMore, setHasMore] = useState(true);
+
+    const [showHoodies, setShowHoodies] = useState(false);
+    const [showJumpers, setShowJumpers] = useState(false);
+    const [showTshirts, setShowTshirts] = useState(false);
+
     const didFetch = useRef(false);
       
     const fetchProducts = async () => {
         try {
-            const res = await axios.get(`${process.env.REACT_APP_API_URL}/products?page=${page}&limit=${limit}`);
-            
-            if(!isLoading) await new Promise(resolve => setTimeout(resolve, 500));
-            
-            const newProducts = res.data;
 
-            setProducts(prev => {
-                const productIds = new Set(prev.map((p: Product) => p.product_id));
-                const unique = newProducts.filter((p: Product) => !productIds.has(p.product_id));
-                return [...prev, ...unique];
-            });
-            setPage(prev => prev + 1);
+            if (showHoodies || showJumpers || showTshirts) {
+                const filterParams: string[] = [];
+
+                if (showHoodies) filterParams.push("type=UCLan Hoodie");
+                if (showJumpers) filterParams.push("type=UCLan Logo Jumper");
+                if (showTshirts) filterParams.push("type=UCLan Logo Tshirt");
                 
-            setIsLoading(false);
-            if (newProducts.length < limit) {
+                const filtersQuery = filterParams.join("&");
+                const res = await axios.get(`${process.env.REACT_APP_API_URL}/products?${filtersQuery}`);
+                setProducts(res.data);
                 setHasMore(false);
+                setIsLoading(false);
+            } else {
+                const res = await axios.get(`${process.env.REACT_APP_API_URL}/products?page=${page}&limit=${limit}`);
+                
+                const newProducts = res.data;
+
+                setProducts(prev => {
+                    const productIds = new Set(prev.map((p: Product) => p.product_id));
+                    const unique = newProducts.filter((p: Product) => !productIds.has(p.product_id));
+                    return [...prev, ...unique];
+                });
+                setPage(prev => prev + 1);
+                    
+                setIsLoading(false);
+                if (newProducts.length < limit) {
+                    setHasMore(false);
+                }
             }
         } catch (error) {
             console.error('Failed to load products:', error);
         }
     };
+
+    const clearFilters = () => {
+        setIsLoading(true);
+        setShowHoodies(false);
+        setShowJumpers(false);
+        setShowTshirts(false);
+        setPage(1);       
+        setHasMore(true);
+        setProducts([]);         
+    }
 
     useEffect(() => {
         if (didFetch.current) return;
@@ -50,14 +78,62 @@ export default function ProductsGrid() {
         fetchProducts();
     }, []);
 
+    useEffect(() => {
+        fetchProducts();
+    }, [showHoodies, showJumpers, showTshirts]);
+
     return(
         <>
+            <div className='flex-3'>
+                <h1 className='text-purple text-center mb-4'>All Products</h1>
+                <div className='input-group mb-2'>
+                    <input className='form-control' placeholder='Search' type="text" />
+                    <button className="btn btn-outline-secondary border-color-grey" type="button"><i className="bi bi-search"></i></button>
+                </div>
+                <div className='pt-2'>
+                    <h5>Filters:</h5>
+                    <div className='row'>
+                        <div className='col-6 col-md-3 p-2'>
+                            <div className="input-group">
+                                <div className="input-group-text">
+                                    <input className="form-check-input mt-0" type="checkbox" onChange={() => setShowHoodies(prev => !prev)} checked={showHoodies} />
+                                </div>
+                                <span className="form-control">Hoodie</span>
+                            </div>  
+                        </div>
+                        <div className='col-6 col-md-3 p-2'>
+                            <div className="input-group">
+                                <div className="input-group-text">
+                                    <input className="form-check-input mt-0" type="checkbox" onChange={() => setShowJumpers(prev => !prev)} checked={showJumpers} />
+                                </div>
+                                <span className="form-control">Jumper</span>
+                            </div>
+                        </div>
+                        <div className='col-6 col-md-3 p-2'>
+                            <div className="input-group">
+                                <div className="input-group-text">
+                                    <input className="form-check-input mt-0" type="checkbox" onChange={() => setShowTshirts(prev => !prev)} checked={showTshirts}/>
+                                </div>
+                                <span className="form-control">T-Shirt</span>
+                            </div>
+                        </div>
+                        <div className='col-6 col-md-3 p-2'>
+                            <div className="input-group">
+                                <button onClick={clearFilters} className="btn btn-primary w-100 border-0">Show All</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr className='mt-4 mb-5'/>
             {isLoading ? (
                 <div className="d-flex justify-content-center align-items-center" style={{ minHeight: '200px' }}>
                     <div className="spinner-border text-primary" role="status">
                         <span className="visually-hidden">Loading...</span>
                     </div>
                 </div>
+            ) : products.length === 0 ? (
+                <p className="text-center my-4">No products found for the selected filters.</p>
             ) : (
                 <InfiniteScroll
                 dataLength={products.length}

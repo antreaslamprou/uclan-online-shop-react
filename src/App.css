@@ -13,6 +13,10 @@ footer img,
     max-height: 85px;
 }
 
+.navbar button:focus {
+    box-shadow: none!important;
+}
+
 .text-orange {
     color: #d3a304;
 }
@@ -56,6 +60,10 @@ iframe {
 
 .card.product {
     height: 100%;
+}
+
+tbody tr {
+    height: 70px;
 }
 
 .rating-field {

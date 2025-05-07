@@ -96,14 +96,16 @@ export default function Product(props: Props) {
                 className="card-img-top" 
                 alt={props.product.product_title} 
                 onLoad={() => setLoaded(true)} />
-            <div className="card-body bg-body-secondary">
+            <div className="card-body bg-body-secondary d-flex flex-column justify-content-between">
                 <h5 className="card-title text-orange">{props.product.product_title}</h5>
-                <p className="card-text mb-0">
-                    {capitalize(props.product.product_desc)}.
-                </p>
-                {!props.isSingleProduct && (<Link to={`/products/${props.product.product_id}`} className="card-text btn border-0 p-0 text-primary text-start">Read More</Link>)}
-                <p className="fw-bold">£ {props.product.product_price}</p>
-                <button onClick={addToCart} className="btn btn-primary py-2 px-4">Buy</button>
+                <div>
+                    <p className="card-text mb-0">
+                        {capitalize(props.product.product_desc)}.
+                    </p>
+                    {!props.isSingleProduct && (<Link to={`/products/${props.product.product_id}`} className="card-text btn border-0 p-0 text-primary text-start">Read More</Link>)}
+                    <p className="fw-bold">£ {props.product.product_price}</p>
+                    <button onClick={addToCart} className="btn btn-primary py-2 px-4">Buy</button>
+                </div>
             </div>
         </div>
         </>

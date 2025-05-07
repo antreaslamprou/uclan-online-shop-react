@@ -53,12 +53,12 @@ export default function CartItems() {
                     </thead>
                     <tbody>
                         {cart.map((item, index) => (
-                        <tr key={item.product_id}>
-                            <td>{index+1}</td>
-                            <td className='position-relative'><img className='position-sticky top-50 start-50 translate-middle-x' src={item.product_image} alt={item.product_title} style={{ width: '50px' }} /></td>
+                        <tr key={item.product_id} className='align-middle'>
+                            <td className='text-center'>{index+1}</td>
+                            <td className='text-center'><img src={item.product_image} alt={item.product_title} style={{ width: '50px' }} /></td>
                             <td>{item.product_title}</td>
                             <td>£ {item.product_price}</td>
-                            <td className='position-relative'><button onClick={() => removeProduct(item.product_id)} className='btn border-0 position-absolute top-50 start-50 translate-middle'><i className="bi bi-trash-fill"></i></button></td>
+                            <td className='text-center'><button onClick={() => removeProduct(item.product_id)} className='btn border-0'><i className="bi bi-trash-fill"></i></button></td>
                         </tr>
                         ))}
                     </tbody>

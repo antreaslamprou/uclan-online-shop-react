@@ -24,20 +24,42 @@ router.get('/:id', (req, res) => {
 
 // Pagination logic for products list
 router.get('/', (req, res) => {
-  const page = parseInt(req.query.page) || 1;
-  const limit = parseInt(req.query.limit) || 9;
-  const offset = (page - 1) * limit;
-
-  const query = 'SELECT * FROM tbl_products LIMIT ? OFFSET ?';
-
-  db.query(query, [limit, offset], (err, results) => {
-    if (err) {
-      console.error('Database query error:', err);
-      return res.status(500).json({ error: err });
+  const types = req.query.type; 
+  if (types) {
+    var filtersQuery = 'SELECT * FROM tbl_products';
+    var params = [];
+    if (Array.isArray(types)) {
+      const placeholders = types.map(() => '?').join(', ');
+      filtersQuery += ` WHERE product_type IN (${placeholders})`;
+      params.push(...types);
+    } else {
+      filtersQuery += ' WHERE product_type = ?';
+      params = [types];
     }
+    db.query(filtersQuery, params, (err, results) => {
+      if (err) {
+        console.error('Database query error:', err);
+        return res.status(500).json({ error: err });
+      }
 
-    return res.json(results);  // Send paginated products
-  });
+      return res.json(results);  // Send paginated products
+    });
+  } else {
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 9;
+    const offset = (page - 1) * limit;
+
+    const query = 'SELECT * FROM tbl_products LIMIT ? OFFSET ?';
+
+    db.query(query, [limit, offset], (err, results) => {
+      if (err) {
+        console.error('Database query error:', err);
+        return res.status(500).json({ error: err });
+      }
+
+      return res.json(results);  // Send paginated products
+    });
+  }
 });
 
 export default router;
