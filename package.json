@@ -27,6 +27,7 @@
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-infinite-scroll-component": "^6.1.0",
+    "react-loading-skeleton": "^3.5.0",
     "react-router-dom": "^7.5.3",
     "react-scripts": "^5.0.1",
     "resolve-url-loader": "^5.0.0",

@@ -27,8 +27,7 @@ export default function ProductsGrid() {
             if(!isLoading) await new Promise(resolve => setTimeout(resolve, 500));
             
             const newProducts = res.data;
-            
-            // Avoid duplicates
+
             setProducts(prev => {
                 const productIds = new Set(prev.map((p: Product) => p.product_id));
                 const unique = newProducts.filter((p: Product) => !productIds.has(p.product_id));
@@ -64,15 +63,18 @@ export default function ProductsGrid() {
                 dataLength={products.length}
                 next={fetchProducts}
                 hasMore={hasMore}
+                className='overflow-hidden'
                 loader={<div className="d-flex justify-content-center align-items-center" style={{ minHeight: '200px' }}>
                             <div className="spinner-border text-primary" role="status">
                                 <span className="visually-hidden">Loading...</span>
                             </div>
                         </div>}
                 endMessage={<p className="text-center my-3">You've reached the end.</p>}>
-                    <div className='products-grid d-flex flex-row gap-3 flex-wrap justify-content-center'>
+                    <div className='row products-grid flex-wrap justify-content-center'>
                         {products.map((product, i) => (
-                            <Product key={i} product={product} />
+                            <div className='col-6 col-lg-4 pb-4' >
+                                <Product key={i} product={product} />
+                            </div>
                         ))}
                     </div>
                 </InfiniteScroll>

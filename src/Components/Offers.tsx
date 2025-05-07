@@ -29,9 +29,9 @@ export default function Offers() {
         ) : (
             <>
             {offers.length === 0 && <h5>No available offers. Stay tuned!</h5>}
-            <div className="d-flex gap-3 justify-content-around">
+            <div className="row gap-3 px-2 justify-content-around">
                 {offers.map((offer, i) => (
-                <div key={i} className="offer card card-body bg-body-secondary text-center">
+                <div key={i} className="col-12 col-md-3 offer card card-body bg-body-secondary text-center">
                     <h5 className="text-orange">{offer.offer_title}</h5>
                     <p className="card-text">{offer.offer_dec}</p>
                 </div>

@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import Skeleton from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css';
 
 interface Product {
     product_id: number;
@@ -18,6 +20,7 @@ interface Props {
 export default function Product(props: Props) {
     const [toastType, setToastType] = useState<"success" | "danger">("success");
     const [showToast, setShowToast] = useState(false);
+    const [loaded, setLoaded] = useState(false);
 
     useEffect(() => {
     if (showToast) {
@@ -86,7 +89,13 @@ export default function Product(props: Props) {
         )}  
         <div key={props.product.product_id} className="card product">
             {props.isSingleProduct && (<Link to="/products" className="position-absolute top-0 left-0"><i className="bi bi-chevron-left px-1"></i></Link>)}
-            <img loading="lazy" src={`/${props.product.product_image}`} className="card-img-top" alt={props.product.product_title} />
+            {!loaded && <Skeleton className='card-img-top mt-0 pt-0' style={{width: '100%', aspectRatio: '1 / 1' }}/>}
+            <img 
+                loading="lazy" 
+                src={`/${props.product.product_image}`} 
+                className="card-img-top" 
+                alt={props.product.product_title} 
+                onLoad={() => setLoaded(true)} />
             <div className="card-body bg-body-secondary">
                 <h5 className="card-title text-orange">{props.product.product_title}</h5>
                 <p className="card-text mb-0">

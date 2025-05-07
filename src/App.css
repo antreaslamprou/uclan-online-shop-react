@@ -7,8 +7,10 @@ html, body, #root {
     min-height: 100vh;
 }
 
+footer img,
 .navbar img {
     max-width: 250px;
+    max-height: 85px;
 }
 
 .text-orange {
@@ -17,11 +19,6 @@ html, body, #root {
 
 .text-purple {
     color: #34516C;
-}
-
-.products-grid .product,
-.offer {
-    max-width: 30%!important;
 }
 
 .card {
@@ -55,6 +52,10 @@ iframe {
 
 .card.product .card-text a {
     margin-top: -5px;
+}
+
+.card.product {
+    height: 100%;
 }
 
 .rating-field {

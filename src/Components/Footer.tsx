@@ -18,6 +18,9 @@ export default function Footer() {
                     <p>12 University Avenue Pyla, 7080, Larnaca</p>
                 </div>
             </div>
+            <div className='container-md text-center pt-4 opacity-50'>
+                <img className="" src="/images/uclanlogo.png" alt="Page Logo" />
+            </div>
         </footer>
     )
 }
