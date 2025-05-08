@@ -6,7 +6,7 @@ const ProductGrid = lazy(() => import('../Components/ProductsGrid'));
 const Products = () => {
   return (
     <>
-      <div className="container my-4">
+      <div className="container">
           <ProductGrid />
       </div>
     </>

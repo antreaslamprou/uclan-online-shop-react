@@ -11,10 +11,11 @@ import Login from './Pages/Login';
 import NotFound from './Pages/NotFound';
 import ProductDetails from './Pages/ProductDetails';
 import Profile from './Pages/Profile';
+import BackToTopButton from './Components/BackToTopButton';
 
 function App() {
   return (
-    <div className="layout d-flex flex-column">
+    <div className="layout d-flex flex-column user-select-none">
       <NavBar/>
       <main className='container-lg my-5 flex-fill d-flex flex-column'>
         <Routes>
@@ -26,6 +27,7 @@ function App() {
           <Route path="/profile" element={<Protected type="Route"><Profile /></Protected>} />
           <Route path="*" element={<NotFound />} />
         </Routes>
+        <BackToTopButton />
       </main>
       <Footer/>
     </div>
