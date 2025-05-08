@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import Loader from './Loader';
 
 interface Offer {
   offer_title: string;
@@ -21,11 +22,7 @@ export default function Offers() {
         <>
         <h1 className="text-purple mb-3">Offers</h1>
         {(isLoading) ? (
-            <div className="d-flex justify-content-center align-items-center" style={{ minHeight: '200px' }}>
-                <div className="spinner-border text-primary" role="status">
-                <span className="visually-hidden">Loading...</span>
-                </div>
-            </div>
+            <Loader />
         ) : (
             <>
             {offers.length === 0 && <h5>No available offers. Stay tuned!</h5>}

@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import axios from 'axios';
 import Product from '../Components/Product';
+import Loader from './Loader';
 
 interface Product {
     product_id: number,
@@ -141,12 +142,8 @@ export default function ProductsGrid() {
             </div>
             <hr className='mt-4 mb-3'/>
             {products.length > 0 && <p>Showing {products.length} of {totalProducts} products:</p>}
-            {isLoading ? (
-                <div className="d-flex justify-content-center align-items-center" style={{ minHeight: '200px' }}>
-                    <div className="spinner-border text-primary" role="status">
-                        <span className="visually-hidden">Loading...</span>
-                    </div>
-                </div>
+            {isLoading ? ( 
+                <Loader />
             ) : products.length === 0 ? (
                 <p className="text-center my-4">No products found for the selected filters.</p>
             ) : (
@@ -155,11 +152,7 @@ export default function ProductsGrid() {
                 next={() => fetchProducts()}
                 hasMore={hasMore}
                 className='overflow-hidden'
-                loader={<div className="d-flex justify-content-center align-items-center" style={{ minHeight: '200px' }}>
-                            <div className="spinner-border text-primary" role="status">
-                                <span className="visually-hidden">Loading...</span>
-                            </div>
-                        </div>}
+                loader={<Loader />}
                 endMessage={<p className="text-center my-3">You've reached the end.</p>}>
                     <div className='row products-grid flex-wrap justify-content-center'>
                         {products.map((product) => (

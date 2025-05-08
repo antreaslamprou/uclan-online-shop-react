@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import FormField from "./FormField";
 
 interface User {
     user_full_name : string,
@@ -35,22 +36,10 @@ export default function ChangeDetails() {
     return(
         <>
             <h2 className="text-purple my-4">Details</h2>
-            <div className="input-group mb-3">
-                <span className="input-group-text"><i className="bi bi-person-lines-fill"></i></span>
-                <input type="text" disabled={isEnabled ? false : true} className="form-control" placeholder="Full Name" value={user.user_full_name} aria-label="Full Name" />
-            </div>
-            <div className="input-group mb-3">
-                <span className="input-group-text"><i className="bi bi-envelope-fill"></i></span>
-                <input type="text" disabled={isEnabled ? false : true} className="form-control" placeholder="Email" value={user.user_email} aria-label="Email" />
-            </div>
-            <div className="input-group mb-3">
-                <span className="input-group-text"><i className="bi bi-key-fill"></i></span>
-                <input type="text" disabled={isEnabled ? false : true} className="form-control" placeholder="Password" value={user.user_pass} aria-label="Password" />
-            </div>
-            <div className="input-group mb-3">
-                <span className="input-group-text"><i className="bi bi-pin-map-fill"></i></span>
-                <input type="text" disabled={isEnabled ? false : true} className="form-control" placeholder="Address" value={user.user_address} aria-label="Address" />
-            </div>
+                <FormField iconClass="bi-person-lines-fill" isDisabled={!isEnabled} type="text" name="Full Name" defaultValue={user.user_full_name} placeholder="Full Name" onChangeCallback={(newName) => setUser(prevUser => ({...prevUser,user_full_name: newName}))} />
+                <FormField iconClass="bi-envelope-fill" isDisabled={!isEnabled} type="email" name="Email" defaultValue={user.user_email} placeholder="Email" onChangeCallback={(newEmail) => setUser(prevUser => ({...prevUser,user_email: newEmail}))} />
+                <FormField iconClass="bi-key-fill" isDisabled={!isEnabled} type="password" name="Password" defaultValue={user.user_pass} placeholder="Password" onChangeCallback={(newPassword) => setUser(prevUser => ({...prevUser,user_pass: newPassword}))} />
+                <FormField iconClass="bi-pin-map-fill" isDisabled={!isEnabled} type="text" name="Address" defaultValue={user.user_address} placeholder="Address" onChangeCallback={(newAddress) => setUser(prevUser => ({...prevUser,user_address: newAddress}))} />
             <div className="row justify-content-center gap-3 mt-4 mb-5">
                 <button type='button' className="btn btn-secondary col-5" onClick={() => setIsEnabled(prev => !prev)}>{isEnabled ? "Cancel" : "Edit"}</button>
                 <button type='submit' className="btn btn-success col-5" disabled={isEnabled ? false : false}>Confirm</button>

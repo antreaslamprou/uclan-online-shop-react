@@ -2,6 +2,7 @@ import axios from "axios";
 import { ReactNode, useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
 import { Link } from 'react-router-dom';
+import Loader from "./Loader";
 
 interface Props{
     type: "Route" | "Component";
@@ -27,11 +28,7 @@ export default function Protected(props: Props) {
 
     if (loading) {
         return (
-            <div className="d-flex justify-content-center align-items-center" style={{ minHeight: '200px' }}>
-                <div className="spinner-border text-primary" role="status">
-                    <span className="visually-hidden">Loading...</span>
-                </div>
-            </div>
+           <Loader />
         )
     }
 

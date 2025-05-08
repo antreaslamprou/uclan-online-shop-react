@@ -22,47 +22,34 @@ router.post('/signup', async (req, res) => {
   const { email, password, name, address } = req.body;
 
   db.query('SELECT * FROM tbl_users WHERE user_email = ?', [email], async (err, results) => {
-    if (err) {
-      console.error('Signup error:', err);
-      return res.status(500).json({ error: 'Server error' });
-    }
-
-    if (results.length > 0) {
-      return res.status(409).json({ error: 'User already exists with that email' });
-    }
+    if (err) return res.status(500).json({ error: 'Server error' });
+    if (results.length > 0) return res.status(409).json({ error: 'Email already exists' });
 
     try {
-      const saltRounds = parseInt(process.env.SALT_ROUNDS || '10');
-      const hashedPassword = await bcrypt.hash(password, saltRounds);
-
+      const hashedPassword = await bcrypt.hash(password, 10);
+      
       db.query(
         'INSERT INTO tbl_users (user_email, user_pass, user_full_name, user_address) VALUES (?, ?, ?, ?)',
         [email, hashedPassword, name, address],
         (err, result) => {
-          if (err) {
-            console.error('Signup insert error:', err);
-            return res.status(500).json({ error: 'Database error' });
-          }
+          if (err) return res.status(500).json({ error: 'Database error' });
 
-          const newUser = {
-            email,
-            hashedPassword,
-            name,
-            address
-          };
-
-          // Auto-login the new user
-          req.login(newUser, (err) => {
-            if (err) {
-              console.error('Login after signup failed:', err);
-              return res.status(500).json({ error: 'Login after signup failed' });
-            }
-            res.status(201).json({ message: 'User registered and logged in', user: newUser });
+          // Get the FULL user record from database
+          db.query('SELECT * FROM tbl_users WHERE user_id = ?', [result.insertId], (err, results) => {
+            if (err || !results.length) return res.status(500).json({ error: 'Failed to fetch new user' });
+            
+            const newUser = results[0];
+            req.login(newUser, (err) => {
+              if (err) {
+                console.error('Login after signup failed:', err);
+                return res.status(500).json({ error: 'Login after signup failed' });
+              }
+              res.status(201).json({ message: 'User registered and logged in', user: newUser });
+            });
           });
         }
       );
     } catch (error) {
-      console.error('Hashing error:', error);
       res.status(500).json({ error: 'Internal error' });
     }
   });
