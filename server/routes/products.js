@@ -22,51 +22,59 @@ router.get('/:id', (req, res) => {
   });  
 });
 
-// Pagination logic for products list
 router.get('/', (req, res) => {
   const types = req.query.type; 
   const search = req.query.search;
-  var searchQuery = '';
-  var searchQueryWhere = '';
-  if (search != undefined && search != '') {
-    searchQuery = " AND product_title LIKE '" + search + "'";
-    searchQueryWhere = "WHERE product_title LIKE '" + search + "'";
-  } 
-  if (types) {
-    var filtersQuery = 'SELECT * FROM tbl_products';
-    var params = [];
-    if (Array.isArray(types)) {
-      const placeholders = types.map(() => '?').join(', ');
-      filtersQuery += ` WHERE product_type IN (${placeholders})`;
-      params.push(...types);
-    } else {
-      filtersQuery += ' WHERE product_type = ?';
-      params = [types];
-    }
-    filtersQuery += searchQuery;
-    db.query(filtersQuery, params, (err, results) => {
-      if (err) {
-        console.error('Database query error:', err);
-        return res.status(500).json({ error: err });
-      }
 
-      return res.json(results);  // Send paginated products
-    });
-  } else {
-    const page = parseInt(req.query.page) || 1;
-    const limit = parseInt(req.query.limit) || 12;
-    const offset = (page - 1) * limit;
+  const page = parseInt(req.query.page) || 1;
+  const limit = parseInt(req.query.limit) || 12;
+  const offset = (page - 1) * limit;
 
-    const query = `SELECT * FROM tbl_products ${searchQueryWhere} LIMIT ? OFFSET ?`;
-    db.query(query, [limit, offset], (err, results) => {
-      if (err) {
-        console.error('Database query error:', err);
-        return res.status(500).json({ error: err });
-      }
+  let whereClauses = [];
+  let values = [];
 
-      return res.json(results);  // Send paginated products
-    });
+  // Build WHERE clause for search
+  if (search && search !== '') {
+    whereClauses.push(`product_title LIKE ?`);
+    values.push(`%${search}%`);
   }
+
+  // Build WHERE clause for types
+  if (types) {
+    if (Array.isArray(types)) {
+      whereClauses.push(`product_type IN (${types.map(() => '?').join(',')})`);
+      values.push(...types);
+    } else {
+      whereClauses.push(`product_type = ?`);
+      values.push(types);
+    }
+  }
+
+  const whereSQL = whereClauses.length > 0 ? `WHERE ${whereClauses.join(' AND ')}` : '';
+
+  // Main paginated query
+  const paginatedQuery = `SELECT * FROM tbl_products ${whereSQL} LIMIT ? OFFSET ?`;
+  const countQuery = `SELECT COUNT(*) AS total FROM tbl_products ${whereSQL}`;
+
+  db.query(countQuery, values, (err, countResult) => {
+    if (err) {
+      console.error('Database count error:', err);
+      return res.status(500).json({ error: err });
+    }
+
+    db.query(paginatedQuery, [...values, limit, offset], (err, dataResult) => {
+      if (err) {
+        console.error('Database query error:', err);
+        return res.status(500).json({ error: err });
+      }
+
+      return res.json({
+        total: countResult[0].total,
+        products: dataResult
+      });
+    });
+  });
 });
+
 
 export default router;

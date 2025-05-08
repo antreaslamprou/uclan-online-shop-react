@@ -29,6 +29,16 @@ footer img,
     color: #34516C;
 }
 
+video {
+    max-width: 1296px;
+    aspect-ratio: 1.89!important;
+}
+
+iframe {
+    max-width: 1296px;
+    aspect-ratio: 1.77!important;
+}
+
 .card {
     transition: box-shadow 0.3s ease;
 }
@@ -49,27 +59,9 @@ footer img,
     overflow: hidden;
 }
 
-video {
-    max-width: 1296px;
-    aspect-ratio: 1.89!important;
-}
-
-iframe {
-    max-width: 1296px;
-    aspect-ratio: 1.77!important;
-}
-
-.card.product .card-text a {
-    margin-top: -5px;
-}
-
 .card.product {
     height: 100%;
 }
-
-/* .card.product {
-    max-width: 500px;
-} */
 
 tbody tr {
     height: 70px;

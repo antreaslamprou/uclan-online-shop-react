@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import axios from 'axios';
 import Product from '../Components/Product';
@@ -16,6 +16,7 @@ export default function ProductsGrid() {
     const [products, setProducts] = useState<Product[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [page, setPage] = useState(1);
+    const [totalProducts, setTotalProducts] = useState(0);
     const limit = 12;
     const [hasMore, setHasMore] = useState(true);
 
@@ -26,79 +27,58 @@ export default function ProductsGrid() {
     const [showHoodies, setShowHoodies] = useState(false);
     const [showJumpers, setShowJumpers] = useState(false);
     const [showTshirts, setShowTshirts] = useState(false);
-
-    const didFetch = useRef(false);
       
-    const fetchProducts = async () => {
+    const fetchProducts = async (pageOverride?: number) => {
         try {
-            var searchParam = '';
+            const currentPage = pageOverride ?? page;
+            let searchParam = '';
+            const filterParams: string[] = [];
+    
             if (search !== '') {
-                var searchEncoded = encodeURIComponent(search);
+                const searchEncoded = encodeURIComponent(search);
                 searchParam = `&search=%${searchEncoded}%`;
             }
             if (showHoodies || showJumpers || showTshirts) {
-                const filterParams: string[] = [];
-
-                if (showHoodies) filterParams.push("type=UCLan Hoodie");
-                if (showJumpers) filterParams.push("type=UCLan Logo Jumper");
-                if (showTshirts) filterParams.push("type=UCLan Logo Tshirt");
-                
-                const filtersQuery = filterParams.join("&");
-                const res = await axios.get(`${process.env.REACT_APP_API_URL}/products?${filtersQuery}${searchParam}`);
-                setProducts(res.data);
-                setIsLoading(false);
-                if (products.length < limit) {
-                    setHasMore(false);
-                }
-            } else {
-                const res = await axios.get(`${process.env.REACT_APP_API_URL}/products?page=${page}&limit=${limit}${searchParam}`);
-                
-                const newProducts = res.data;
-
-                setProducts(prev => {
-                    const productIds = new Set(prev.map((p: Product) => p.product_id));
-                    const unique = newProducts.filter((p: Product) => !productIds.has(p.product_id));
-                    return [...prev, ...unique];
-                });
-                setPage(prev => prev + 1);
-                    
-                setIsLoading(false);
-                if (newProducts.length < limit) {
-                    setHasMore(false);
-                }
+                if (showHoodies) filterParams.push("&type=UCLan Hoodie");
+                if (showJumpers) filterParams.push("&type=UCLan Logo Jumper");
+                if (showTshirts) filterParams.push("&type=UCLan Logo Tshirt");
             }
+            
+            const filtersQuery = filterParams.join('');
+            const res = await axios.get(`${process.env.REACT_APP_API_URL}/products?page=${currentPage}&limit=${limit}${filtersQuery}${searchParam}`);
+            setTotalProducts(res.data.total);
+            const newProducts = res.data.products;
+    
+            setProducts(prev => {
+                const productIds = new Set(prev.map((p: Product) => p.product_id));
+                const unique = newProducts.filter((p: Product) => !productIds.has(p.product_id));
+                return [...prev, ...unique];
+            });
+    
+            if (newProducts.length < limit) {
+                setHasMore(false);
+            } else {
+                setPage(currentPage + 1); // increment page only if there's more data
+            }
+    
+            setIsLoading(false);
         } catch (error) {
             console.error('Failed to load products:', error);
         }
     };
 
-    function setSearchText (value: string) {
-        setPage(1);
-        setSearch(value);
-    }
-
     const clearFilters = () => {
-        setIsLoading(true);
         setShowHoodies(false);
         setShowJumpers(false);
         setShowTshirts(false);
-        setPage(1);
-        setHasMore(true);
-        setProducts([]);
     }
-
-    useEffect(() => {
-        if (didFetch.current) return;
-        didFetch.current = true;
-        fetchProducts();
-    }, []);
 
     useEffect(() => {
         setIsLoading(true);
         setProducts([]);
-        setPage(1);
+        setPage(2); // since we’ll fetch page 1 manually below
         setHasMore(true);
-        fetchProducts();
+        fetchProducts(1); // always fetch first page
     }, [search, showHoodies, showJumpers, showTshirts]);
 
     useEffect(() => {
@@ -114,7 +94,7 @@ export default function ProductsGrid() {
             <div className='flex-3'>
                 <div className='input-group mb-4'>
                     <button className="btn btn-outline-secondary border-color-grey" type="button" disabled={true}><i className="bi bi-search"></i></button>
-                    <input className='form-control' placeholder='Search' type="text" onChange={(e) => setSearchText(e.target.value)} />
+                    <input className='form-control' placeholder='Search' type="text" onChange={(e) => setSearch(e.target.value)} />
                 </div>
                 <div className="accordion" id="filtersAccordion">
                     <div className="accordion-item">
@@ -159,7 +139,8 @@ export default function ProductsGrid() {
                     </div>
                 </div>                    
             </div>
-            <hr className='mt-4 mb-5'/>
+            <hr className='mt-4 mb-3'/>
+            {products.length > 0 && <p>Showing {products.length} of {totalProducts} products:</p>}
             {isLoading ? (
                 <div className="d-flex justify-content-center align-items-center" style={{ minHeight: '200px' }}>
                     <div className="spinner-border text-primary" role="status">
@@ -171,7 +152,7 @@ export default function ProductsGrid() {
             ) : (
                 <InfiniteScroll
                 dataLength={products.length}
-                next={fetchProducts}
+                next={() => fetchProducts()}
                 hasMore={hasMore}
                 className='overflow-hidden'
                 loader={<div className="d-flex justify-content-center align-items-center" style={{ minHeight: '200px' }}>
@@ -181,9 +162,9 @@ export default function ProductsGrid() {
                         </div>}
                 endMessage={<p className="text-center my-3">You've reached the end.</p>}>
                     <div className='row products-grid flex-wrap justify-content-center'>
-                        {products.map((product, i) => (
-                            <div className='col-6 col-lg-4 pb-4' >
-                                <Product key={i} product={product} />
+                        {products.map((product) => (
+                            <div key={product.product_id} className='col-6 col-lg-4 pb-4 d-flex' >
+                                <Product product={product} />
                             </div>
                         ))}
                     </div>

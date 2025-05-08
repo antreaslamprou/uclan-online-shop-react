@@ -65,11 +65,12 @@ export default function CartItems() {
                     </table>
                 </div>
                 <hr/>
-                <div className='d-inline-flex gap-3 align-items-center mb-3 justify-content-end w-100 pe-3'>
-                    <span>You have <span className='fw-bold'>{cart.length} {cart.length === 1 ? 'item' : 'items'}</span> in your cart</span>
-                    <div className='spacer flex-fill'></div>
-                    <h5 className='m-0'>Subtotal:</h5>
-                    <span className='fw-bold pt-1'>£ {total}</span>
+                <div className='d-inline-flex align-items-center mb-3 justify-content-between w-100 pe-3'>
+                    <span>You have <span className='fw-bold'>{cart.length} {cart.length === 1 ? 'item' : 'items'}</span><br className='d-md-none'/> in your cart</span>
+                    <div className='d-flex align-items-center gap-3'>
+                        <h5 className='m-0'>Subtotal:</h5>
+                        <span className='fw-bold pt-1'>£ {total}</span>
+                    </div>
                 </div>
                 <div className='d-flex justify-content-between'>
                     <button className='btn btn-primary' onClick={clearCart}><i className="bi bi-cart-x-fill"></i> Empty Cart</button>

@@ -91,7 +91,7 @@ export default function Reviews() {
 
     return(
         <>
-            <div className="card create-review p-5 my-5">
+            <div className="card create-review p-4 my-5">
                 <h5 className="mb-3 text-orange">Add a Review</h5>
                 <Protected type="Component">
                     <form onSubmit={handleSubmit}>
@@ -140,11 +140,11 @@ export default function Reviews() {
                     <div key={review.id} className="card bg-body-secondary mb-3">
                         <div className="card-body">
 
+                            <h3>{review.review_title}</h3>
                             <div className="d-flex gap-2 mb-2">
                                 <ShowStars rate={review.review_rating} />
                             </div>
-                            <h3>Title: {review.review_title}</h3>
-                            <p>Description: {review.review_desc}</p>
+                            <p>{review.review_desc}</p>
 
 
                         </div>
