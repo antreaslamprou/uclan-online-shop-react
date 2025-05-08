@@ -5,8 +5,8 @@ export default function Footer() {
                 <div className="d-flex justify-content-between d-none d-lg-flex">
                     <div>
                         <h5>Links</h5>
-                        <p><a className="text-white fw-bold" href="https://www.uclan.ac.uk/">UCLan Home Page </a></p>
-                        <p><a className="text-white fw-bold" href="https://www.uclancyprus.ac.cy/">UCLan Cyprus Home Page </a></p>
+                        <p><a className="text-white fw-bold" target="blank" href="https://www.uclan.ac.uk/">UCLan Home Page </a></p>
+                        <p><a className="text-white fw-bold" target="blank" href="https://www.uclancyprus.ac.cy/">UCLan Cyprus Home Page </a></p>
                     </div>
                     <div>
                         <h5>Contact</h5>
@@ -16,7 +16,7 @@ export default function Footer() {
                     <div>
                         <h5>Address</h5>
                         <p>University of Central Lancashire Cyprus</p>
-                        <p>12 University Avenue Pyla, 7080, Larnaca</p>
+                        <a className="text-white fw-bold" target="blank" href="https://maps.app.goo.gl/fzEL8AzPD3KhCH8z6">12 University Avenue Pyla, 7080, Larnaca</a>
                     </div>
                 </div>
                 <div className="accordion accordion-flush d-lg-none">
@@ -28,8 +28,8 @@ export default function Footer() {
                         </p>
                         <div id="collapse-links" className="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
                         <div className="accordion-body bg-secondary">
-                            <p><a className="text-white fw-bold" href="https://www.uclan.ac.uk/">UCLan Home Page </a></p>
-                            <p><a className="text-white fw-bold" href="https://www.uclancyprus.ac.cy/">UCLan Cyprus Home Page </a></p>
+                            <p><a className="text-white fw-bold" target="blank" href="https://www.uclan.ac.uk/">UCLan Home Page </a></p>
+                            <p><a className="text-white fw-bold" target="blank" href="https://www.uclancyprus.ac.cy/">UCLan Cyprus Home Page </a></p>
                         </div>
                         </div>
                     </div>
@@ -55,7 +55,7 @@ export default function Footer() {
                         <div id="collapse-address" className="accordion-collapse collapse" aria-labelledby="headingOne">
                         <div className="accordion-body bg-secondary">
                             <p>University of Central Lancashire Cyprus</p>
-                            <p>12 University Avenue Pyla, 7080, Larnaca</p>
+                            <a className="text-white fw-bold" target="blank" href="https://maps.app.goo.gl/fzEL8AzPD3KhCH8z6">12 University Avenue Pyla, 7080, Larnaca</a>
                         </div>
                         </div>
                     </div>
