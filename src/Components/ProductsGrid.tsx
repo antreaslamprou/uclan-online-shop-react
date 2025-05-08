@@ -58,7 +58,7 @@ export default function ProductsGrid() {
             if (newProducts.length < limit) {
                 setHasMore(false);
             } else {
-                setPage(currentPage + 1); // increment page only if there's more data
+                setPage(currentPage + 1);
             }
     
             setIsLoading(false);

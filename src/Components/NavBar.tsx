@@ -1,10 +1,11 @@
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import { useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 export default function NavBar(){
     const location = useLocation();
-    const [active, setActive] = useState<string>('');
+    const [active, setActive] = useState('');
 
     useEffect(() => {
         const path = location.pathname === '/' ? 'home' : location.pathname.slice(1);
@@ -35,10 +36,10 @@ export default function NavBar(){
                     </div>
                     <div className="offcanvas-body">
                         <div className="navbar-nav justify-content-end flex-grow-1 pe-3">
-                            <Link to="/" className={active === 'home' ? 'btn active' : 'btn'} onClick={() => setActive('home')}><i className="bi bi-house-fill"></i> Home</Link>
-                            <Link to="/products" className={active === 'products' ? 'btn active' : 'btn'} onClick={() => setActive('products')}><i className="bi bi-table"></i> Products</Link>
-                            <Link to="/cart" className={active === 'cart' ? 'btn active' : 'btn'} onClick={() => setActive('cart')}><i className="bi bi-cart-fill"></i> Cart</Link>
-                            <Link to="/profile" className={active === 'profile' || active === 'login' ? 'btn active' : 'btn'} onClick={() => setActive('profile')}><i className="bi bi-person-circle"></i> Profile</Link>
+                            <Link to="/" data-bs-dismiss="offcanvas" className={active === 'home' ? 'btn active' : 'btn'} onClick={() => setActive('home')}><i className="bi bi-house-fill"></i> Home</Link>
+                            <Link to="/products" data-bs-dismiss="offcanvas" className={active === 'products' ? 'btn active' : 'btn'} onClick={() => setActive('products')}><i className="bi bi-table"></i> Products</Link>
+                            <Link to="/cart" data-bs-dismiss="offcanvas" className={active === 'cart' ? 'btn active' : 'btn'} onClick={() => setActive('cart')}><i className="bi bi-cart-fill"></i> Cart</Link>
+                            <Link to="/profile" data-bs-dismiss="offcanvas" className={active === 'profile' || active === 'login' ? 'btn active' : 'btn'} onClick={() => setActive('profile')}><i className="bi bi-person-circle"></i> Profile</Link>
                         </div>
                     </div>
                 </div>
