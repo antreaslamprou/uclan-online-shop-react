@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import ChangeDetails from '../Components/ChangeDetails';
 
 const Profile = () => {
     const [user, setUser] = useState('');
@@ -36,12 +37,19 @@ const Profile = () => {
     };
       
     return(
-       <>
-          <h1 className="text-orange mb-4">Profile</h1>
-          <h2>Welcome back {user}</h2>
-
-          <button className='btn btn-danger' onClick={LogOut}>Log Out</button>
-       </>
+      <div className='d-flex flex-column flex-fill justify-content-between'>
+        <div>
+        
+          <h1 className="text-purple mb-4">Profile</h1>
+          <h2>Welcome back {user}!</h2>
+          <hr></hr>
+          <ChangeDetails />
+          <h2 className="text-purple my-4">Orders</h2>
+        </div>
+        <div className='row'>
+          <button className=' col-6 col-sm-3 mx-auto btn btn-danger' onClick={LogOut}>Log Out</button>
+        </div>
+      </div>
     );
 }
 
