@@ -94,7 +94,7 @@ export default function Product(props: Props) {
                 <img 
                     loading="lazy" 
                     src={`/${props.product.product_image}`} 
-                    className="card-img-top" 
+                    className={`card-img-top ${loaded ? 'd-block' : 'd-none'}`}
                     alt={props.product.product_title} 
                     onLoad={() => setLoaded(true)} />
                 <div className="card-body bg-body-secondary d-flex flex-column justify-content-between">
