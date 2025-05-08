@@ -32,6 +32,14 @@ export default function Product(props: Props) {
     }
     }, [showToast, toastType]);
 
+    useEffect(() => {
+      const img = new Image();
+      img.src = `/${props.product.product_image}`;
+      img.onload = () => setLoaded(true);
+      img.onerror = () => setLoaded(true); // Fallback
+    }, [props.product.product_image]);
+    
+
     function changeToast(type: "success" | "danger") {
         setToastType(type);
         setShowToast(true);
@@ -94,9 +102,10 @@ export default function Product(props: Props) {
                 <img 
                     loading="lazy" 
                     src={`/${props.product.product_image}`} 
-                    className={`card-img-top ${loaded ? 'd-block' : 'd-none'}`}
+                    className={`card-img-top ${loaded ? "block" : "none" }`}
                     alt={props.product.product_title} 
-                    onLoad={() => setLoaded(true)} />
+                    onLoad={() => setLoaded(true)} 
+                    onError={() => setLoaded(true)} />
                 <div className="card-body bg-body-secondary d-flex flex-column justify-content-between">
                     <h5 className="card-title text-orange">{props.product.product_title}</h5>
                     <div>
