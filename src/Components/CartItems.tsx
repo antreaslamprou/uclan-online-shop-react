@@ -32,6 +32,7 @@ export default function CartItems() {
 
     const clearCart = () => {
         localStorage.removeItem('cart');
+        window.dispatchEvent(new Event('cart-updated'));
         setCart([]);
     };
 
