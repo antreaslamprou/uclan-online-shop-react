@@ -69,6 +69,7 @@ export default function Product(props: Props) {
         });
       
         localStorage.setItem('cart', JSON.stringify(existingCart));
+        window.dispatchEvent(new Event('cart-updated')); // Notify Navbar cart bubble 
     };
 
     function capitalize(str: string) {

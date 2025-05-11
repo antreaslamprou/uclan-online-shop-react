@@ -13,9 +13,25 @@ export default function NavBar(){
     useEffect(() => {
         const path = location.pathname === '/' ? 'home' : location.pathname.slice(1);
         setActive(path);
-        const cartData = localStorage.getItem('cart')?.length;
-        setCartItems(cartData ? cartData : 0);
+        // const cartData = JSON.parse(localStorage.getItem('cart') || '[]').length;
+        // setCartItems(cartData ? cartData : 0);
     }, [location.pathname]);    
+
+   useEffect(() => {
+        const handleCartUpdate = () => {
+            const updatedCart = JSON.parse(localStorage.getItem('cart') || '[]');
+            setCartItems(updatedCart.length);
+        };
+
+        window.addEventListener('cart-updated', handleCartUpdate);
+
+        // Optional: Initialize on mount
+        handleCartUpdate();
+
+        return () => {
+            window.removeEventListener('cart-updated', handleCartUpdate);
+        };
+    }, []);
 
     return (
         <header className="navbar navbar-expand-lg bg-primary text-white py-4">
@@ -28,9 +44,9 @@ export default function NavBar(){
                 <div className="d-none d-lg-block d-flex gap-2 text-white">
                     <Link to="/" className={active === 'home' ? 'btn active' : 'btn'} onClick={() => setActive('home')}><i className="bi bi-house-fill"></i><br/>Home</Link>
                     <Link to="/products" className={active === 'products' ? 'btn active' : 'btn'} onClick={() => setActive('products')}><i className="bi bi-table"></i><br/>Products</Link>
-                    <Link to="/cart" className={active === 'cart' ? 'btn active' : 'btn'} onClick={() => setActive('cart')}><i className="bi bi-cart-fill"></i><br/>Cart {cartItems > 0 && (
-                        <span className='position apsolute top-0 end-0 badge'>{cartItems}</span>
-                    )}</Link>
+                    <Link to="/cart" className={active === 'cart' ? 'btn active' : 'btn'} onClick={() => setActive('cart')}><i className="bi bi-cart-fill position-relative">{cartItems > 0 && (
+                        <span className='position-absolute ms-1 mt-1 top-0 start-100 translate-middle badge rounded-pill bg-secondary'>{cartItems}</span>
+                    )}</i><br/>Cart </Link>
                     <Link to="/profile" className={active === 'profile' || active === 'login' ? 'btn active' : 'btn'} onClick={() => setActive('profile')}><i className="bi bi-person-circle"></i><br/>Profile</Link>
                 </div>
                 <button className="d-block d-lg-none navbar-toggler border-0" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">

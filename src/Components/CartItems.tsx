@@ -27,6 +27,7 @@ export default function CartItems() {
         const updatedCart = cart.filter(item => item.product_id !== id);
         setCart(updatedCart);
         localStorage.setItem('cart', JSON.stringify(updatedCart));
+        window.dispatchEvent(new Event('cart-updated')); // Notify Navbar cart bubble 
     };
 
     const clearCart = () => {
