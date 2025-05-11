@@ -6,12 +6,15 @@ import { Link } from 'react-router-dom';
 export default function NavBar(){
     const location = useLocation();
     const [active, setActive] = useState('');
+    const [cartItems, setCartItems] = useState(0);
 
     const closeButtonRef = useRef<HTMLButtonElement>(null);
 
     useEffect(() => {
         const path = location.pathname === '/' ? 'home' : location.pathname.slice(1);
         setActive(path);
+        const cartData = localStorage.getItem('cart')?.length;
+        setCartItems(cartData ? cartData : 0);
     }, [location.pathname]);    
 
     return (
@@ -25,7 +28,9 @@ export default function NavBar(){
                 <div className="d-none d-lg-block d-flex gap-2 text-white">
                     <Link to="/" className={active === 'home' ? 'btn active' : 'btn'} onClick={() => setActive('home')}><i className="bi bi-house-fill"></i><br/>Home</Link>
                     <Link to="/products" className={active === 'products' ? 'btn active' : 'btn'} onClick={() => setActive('products')}><i className="bi bi-table"></i><br/>Products</Link>
-                    <Link to="/cart" className={active === 'cart' ? 'btn active' : 'btn'} onClick={() => setActive('cart')}><i className="bi bi-cart-fill"></i><br/>Cart</Link>
+                    <Link to="/cart" className={active === 'cart' ? 'btn active' : 'btn'} onClick={() => setActive('cart')}><i className="bi bi-cart-fill"></i><br/>Cart {cartItems > 0 && (
+                        <span className='position apsolute top-0 end-0 badge'>{cartItems}</span>
+                    )}</Link>
                     <Link to="/profile" className={active === 'profile' || active === 'login' ? 'btn active' : 'btn'} onClick={() => setActive('profile')}><i className="bi bi-person-circle"></i><br/>Profile</Link>
                 </div>
                 <button className="d-block d-lg-none navbar-toggler border-0" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">

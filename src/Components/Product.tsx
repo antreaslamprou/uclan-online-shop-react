@@ -45,7 +45,11 @@ export default function Product(props: Props) {
         setShowToast(true);
     }
 
-    const addToCart = () => {
+    const addToCart = (e: React.MouseEvent) => {
+        // If clicked from grid
+        e.stopPropagation();
+        e.preventDefault();
+
         const existingCart = JSON.parse(localStorage.getItem('cart') || '[]') as Product[];
         
         if (existingCart.some(item => item.product_id === props.product.product_id)) {
